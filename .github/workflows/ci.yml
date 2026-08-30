@@ -1,0 +1,10 @@
+# Thin caller: the logic lives in visionEAE/workflows.
+name: ci
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ci:
+    uses: visionEAE/workflows/.github/workflows/java-ci.yml@main

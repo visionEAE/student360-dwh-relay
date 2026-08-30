@@ -1,0 +1,4 @@
+*
+!target/student360-dwh-relay-*.jar
+target/*.original
+target/*-sources.jar

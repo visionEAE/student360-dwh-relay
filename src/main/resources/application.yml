@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: dwh-relay
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:student360}
+    username: ${DWH_RELAY_DB_USER:dwh_relay}
+    password: ${DWH_RELAY_DB_PASSWORD}
+
+student360:
+  service-name: dwh-relay
+
+relay:
+  topic: ${PUBSUB_TOPIC:}
+  project-id: ${GOOGLE_CLOUD_PROJECT:}
+  batch-size: ${RELAY_BATCH_SIZE:100}
