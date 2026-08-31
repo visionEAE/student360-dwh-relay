@@ -20,9 +20,15 @@ public class RelayConfiguration {
   }
 
   @Bean
-  @org.springframework.boot.autoconfigure.condition.ConditionalOnProperty("relay.topic")
   @org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
   public EventSink pubSubEventSink(RelayProperties properties) throws IOException {
+    // An empty ${PUBSUB_TOPIC:} still counts as "property present" for @ConditionalOnProperty,
+    // so the guard lives here: a relay without a destination must say so plainly, not build a
+    // Publisher for a nameless topic.
+    if (properties.topic() == null || properties.topic().isBlank()) {
+      throw new IllegalStateException(
+          "PUBSUB_TOPIC is not set — the relay has no destination to publish to");
+    }
     Publisher publisher =
         Publisher.newBuilder(TopicName.of(properties.projectId(), properties.topic())).build();
     return new PubSubEventSink(publisher);
